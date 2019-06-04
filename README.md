@@ -2,3 +2,4 @@
 
 
 1. Callbacks and Higher-Order Functions http://csbin.io/callbacks
+2. Closures, Scope, and Execution Context http://csbin.io/closures
