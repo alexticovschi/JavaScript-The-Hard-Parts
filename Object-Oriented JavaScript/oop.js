@@ -193,3 +193,77 @@ class DeveloperClass extends PersonClass {
 // var thai = new DeveloperClass('Thai', 32);
 // console.log(thai.name); // -> Logs 'Thai'
 // thai.introduce(); //-> Logs 'Hello World, my name is Thai'
+
+
+
+/****************************************************************
+                      EXTENSION: SUBCLASSING
+****************************************************************/
+
+var userFunctionStore = {
+  sayType() {
+    console.log("I am a " + this.type);
+  }
+}
+
+function userFactory(name, score) {
+  let user = Object.create(userFunctionStore);
+  user.type = "User";
+  user.name = name;
+  user.score = score;
+  return user;
+}
+
+
+/*** CHALLENGE 5/5 ***/  
+
+// Created a method called sharePublicMessage that logs 'Welcome users!' and will be 
+// available to adminFactory objects, but not userFactory objects. Do not add this method 
+// directly in the adminFactory function.
+/* Put code here for a method called sharePublicMessage*/
+var publicMessage = {
+  sharePublicMessage: {
+    value() {
+      console.log("Welcome users!");
+    }
+  }
+};
+
+/*** CHALLENGE 1/5 ***/
+
+// Create an object adminFunctionStore that has access to all methods in the 
+// userFunctionStore object, without copying them over individually.
+var adminFunctionStore = Object.create(userFunctionStore, publicMessage);
+
+
+/*** CHALLENGE 2/5 ***/
+
+// Create an adminFactory function that creates an object with all the same data 
+// fields (and default values) as objects of the userFactory class, but without 
+// copying each data field individually.
+function adminFactory(name, score) {
+  /*** CHALLENGE 4/5 ***/  
+
+  // Make sure that adminFactory objects have access to adminFunctionStore methods, 
+  // without copying them over.
+  let adminDefault = userFactory.call(this, name, score);
+  let admin = Object.create(adminFunctionStore);
+
+  /*** CHALLENGE 3/5 ***/
+  // Then make sure the value of the 'type' field for adminFactory objects is 
+  // 'Admin' instead of 'User'
+  admin.type = "Admin";
+
+  return admin;
+}
+
+
+var userFromFactory = userFactory("Steve", 10);
+var adminFromFactory = adminFactory("Eva", 5);
+
+console.log(userFromFactory);
+console.log(adminFromFactory);
+
+// /********* Uncomment these lines to test your work! *********/
+adminFromFactory.sayType() // -> Logs "I am a Admin"
+adminFromFactory.sharePublicMessage() // -> Logs "Welcome users!"
